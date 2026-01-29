@@ -26,15 +26,31 @@ predict_data = [
 ]
 predict_X = pl.DataFrame(predict_data)
 
-if (site == "A"):
-    # Site A
-    siteA_X = data.filter(pl.col("Site") == "A").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
-    siteA_Y = data.filter(pl.col("Site") == "A").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteA_model = RandomForestRegressor().fit(siteA_X, siteA_Y)
+# Site A
+siteA_X = data.filter(pl.col("Site") == "A").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
+siteA_Y = data.filter(pl.col("Site") == "A").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
+siteA_model = RandomForestRegressor().fit(siteA_X, siteA_Y)
 
-    siteA_X_train, siteA_X_test, siteA_Y_train, siteA_Y_test = train_test_split(siteA_X, siteA_Y, test_size=0.2, random_state=42)
+siteA_X_train, siteA_X_test, siteA_Y_train, siteA_Y_test = train_test_split(siteA_X, siteA_Y, test_size=0.2, random_state=42)
+
+# Site B
+siteB_X = data.filter(pl.col("Site") == "B").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
+siteB_Y = data.filter(pl.col("Site") == "B").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
+siteB_model = RandomForestRegressor().fit(siteB_X, siteB_Y)
+
+# Site C
+siteC_X = data.filter(pl.col("Site") == "C").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
+siteC_Y = data.filter(pl.col("Site") == "C").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
+siteC_model = RandomForestRegressor().fit(siteC_X, siteC_Y)
+
+# Site D
+siteD_X = data.filter(pl.col("Site") == "D").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
+siteD_Y = data.filter(pl.col("Site") == "D").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
+siteD_model = RandomForestRegressor().fit(siteD_X, siteD_Y)
+
+if (site == "A"):
     st.header("Site A Model Performance:")
-    st.write(f"R^2 Score: {siteA_model.score(siteA_X_test, siteA_Y_test):.4f}")
+    st.write(f"R² Score: {siteA_model.score(siteA_X_test, siteA_Y_test):.4f}")
 
     siteA_prediction = pl.DataFrame(siteA_model.predict(predict_X))
 
@@ -46,14 +62,9 @@ if (site == "A"):
     st.bar_chart(data=siteA_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "B"):
-    # Site B
-    siteB_X = data.filter(pl.col("Site") == "B").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
-    siteB_Y = data.filter(pl.col("Site") == "B").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteB_model = RandomForestRegressor().fit(siteB_X, siteB_Y)
-
     siteB_X_train, siteB_X_test, siteB_Y_train, siteB_Y_test = train_test_split(siteB_X, siteB_Y, test_size=0.2, random_state=42)
     st.header("Site B Model Performance:")
-    st.write(f"R^2 Score: {siteB_model.score(siteB_X_test, siteB_Y_test):.4f}")
+    st.write(f"R² Score: {siteB_model.score(siteB_X_test, siteB_Y_test):.4f}")
 
     siteB_prediction = pl.DataFrame(siteB_model.predict(predict_X))
 
@@ -65,14 +76,9 @@ if (site == "B"):
     st.bar_chart(data=siteB_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "C"):
-    # Site C
-    siteC_X = data.filter(pl.col("Site") == "C").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
-    siteC_Y = data.filter(pl.col("Site") == "C").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteC_model = RandomForestRegressor().fit(siteC_X, siteC_Y)
-
     siteC_X_train, siteC_X_test, siteC_Y_train, siteC_Y_test = train_test_split(siteC_X, siteC_Y, test_size=0.2, random_state=42)
     st.header("Site C Model Performance:")
-    st.write(f"R^2 Score: {siteC_model.score(siteC_X_test, siteC_Y_test):.4f}")
+    st.write(f"R² Score: {siteC_model.score(siteC_X_test, siteC_Y_test):.4f}")
 
     siteC_prediction = pl.DataFrame(siteC_model.predict(predict_X))
 
@@ -84,14 +90,9 @@ if (site == "C"):
     st.bar_chart(data=siteC_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "D"):
-    # Site D
-    siteD_X = data.filter(pl.col("Site") == "D").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
-    siteD_Y = data.filter(pl.col("Site") == "D").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteD_model = RandomForestRegressor().fit(siteD_X, siteD_Y)
-
     siteD_X_train, siteD_X_test, siteD_Y_train, siteD_Y_test = train_test_split(siteD_X, siteD_Y, test_size=0.2, random_state=42)
     st.header("Site D Model Performance:")
-    st.write(f"R^2 Score: {siteD_model.score(siteD_X_test, siteD_Y_test):.4f}")
+    st.write(f"R² Score: {siteD_model.score(siteD_X_test, siteD_Y_test):.4f}")
 
     siteD_prediction = pl.DataFrame(siteD_model.predict(predict_X))
 
