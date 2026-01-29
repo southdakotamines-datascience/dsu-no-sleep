@@ -55,8 +55,8 @@ if (site == "A"):
     siteA_prediction = pl.DataFrame(siteA_model.predict(predict_X))
 
     siteA_prediction = predict_X.with_columns([
-        pl.Series("ED Enc", siteA_prediction[:, 0]),
-        pl.Series("ED Enc Admitted", siteA_prediction[:, 1])
+        pl.Series("ED Enc", siteA_prediction[:, 0].ceil(), dtype=pl.Int32),
+        pl.Series("ED Enc Admitted", siteA_prediction[:, 1].ceil(), dtype=pl.Int32)
     ])
     st.dataframe(siteA_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteA_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
@@ -69,8 +69,8 @@ if (site == "B"):
     siteB_prediction = pl.DataFrame(siteB_model.predict(predict_X))
 
     siteB_prediction = predict_X.with_columns([
-        pl.Series("ED Enc", siteB_prediction[:, 0]),
-        pl.Series("ED Enc Admitted", siteB_prediction[:, 1])
+        pl.Series("ED Enc", siteB_prediction[:, 0].ceil(), dtype=pl.Int32),
+        pl.Series("ED Enc Admitted", siteB_prediction[:, 1].ceil(), dtype=pl.Int32)
     ])
     st.dataframe(siteB_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteB_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
@@ -83,8 +83,8 @@ if (site == "C"):
     siteC_prediction = pl.DataFrame(siteC_model.predict(predict_X))
 
     siteC_prediction = predict_X.with_columns([
-        pl.Series("ED Enc", siteC_prediction[:, 0]),
-        pl.Series("ED Enc Admitted", siteC_prediction[:, 1])
+        pl.Series("ED Enc", siteC_prediction[:, 0].ceil(), dtype=pl.Int32),
+        pl.Series("ED Enc Admitted", siteC_prediction[:, 1].ceil(), dtype=pl.Int32)
     ])
     st.dataframe(siteC_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteC_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
@@ -97,8 +97,8 @@ if (site == "D"):
     siteD_prediction = pl.DataFrame(siteD_model.predict(predict_X))
 
     siteD_prediction = predict_X.with_columns([
-        pl.Series("ED Enc", siteD_prediction[:, 0]),
-        pl.Series("ED Enc Admitted", siteD_prediction[:, 1])
+        pl.Series("ED Enc", siteD_prediction[:, 0].ceil(), dtype=pl.Int32),
+        pl.Series("ED Enc Admitted", siteD_prediction[:, 1].ceil(), dtype=pl.Int32)
     ])
 
     st.dataframe(siteD_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
