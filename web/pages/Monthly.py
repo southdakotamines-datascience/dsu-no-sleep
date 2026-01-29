@@ -12,28 +12,24 @@ st.set_page_config(
     page_icon="😴"
 )
 
-show_sites = st.checkbox("View an individual site?")
-
 year = st.selectbox(
     "Select a year:",
     options=overall_data["Year"].unique().sort().to_list(),
-    key="month_site_data"
 )
 
-if show_sites:
-    site = st.selectbox(
-        "Select a site:",
-        options=site_data["Site"].unique().sort().to_list(),
-    )
+site = st.selectbox(
+    "Select a site:",
+    options=["All Sites", *site_data["Site"].unique().sort().to_list()],
+)
 
-if show_sites:
-    st.dataframe(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year).to_pandas().style.format({"Month": lambda x: nums_to_months[x]}))
-else:
+if site == "All Sites":
     st.dataframe(overall_data.filter(pl.col("Year") == year).to_pandas().style.format({"Month": lambda x: nums_to_months[x]}))
+else:
+    st.dataframe(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year).to_pandas().style.format({"Month": lambda x: nums_to_months[x]}))
 
 show_col = st.pills("Show: ", options=["ED Enc", "ED Enc Admitted"], selection_mode="multi", default=["ED Enc", "ED Enc Admitted"])
 
-if show_sites:
-    st.line_chart(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year), x="Date", y=show_col)
-else:
+if site == "All Sites":
     st.line_chart(overall_data.filter(pl.col("Year") == year), x="Date", y=show_col)
+else:
+    st.line_chart(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year), x="Date", y=show_col)

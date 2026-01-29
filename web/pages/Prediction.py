@@ -2,7 +2,6 @@ import streamlit as st
 import polars as pl
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from datetime import timedelta
 
 st.title("Predictions for a selected site")
 st.set_page_config(
@@ -14,7 +13,7 @@ data = pl.read_csv("../DSU-Dataset-Hourly-Blocks-Summary.csv")
 last_date = data.select(pl.col("Date").max()).to_numpy()[0][0]
 nums_to_months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 nums_to_hours = {1: "0-5", 2: "6-11", 3: "12-17", 4: "18-23"}
-nums_to_weekdays = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+nums_to_weekdays = {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}
 
 predict_date = st.date_input("Select a date to predict ED Encounters and Admissions for each site:", min_value=last_date)
 site = st.selectbox("Select a site to view predictions for:", options=["A", "B", "C", "D"])
@@ -23,7 +22,7 @@ predict_data = [
     pl.Series("Month", [predict_date.month] * 4),
     pl.Series("Day", [predict_date.day] * 4),
     pl.Series("Hour", [1, 2, 3, 4]),
-    pl.Series("Weekday", [predict_date.weekday()] * 4),
+    pl.Series("Weekday", [predict_date.weekday() + 1] * 4),
 ]
 predict_X = pl.DataFrame(predict_data)
 
