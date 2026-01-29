@@ -7,7 +7,7 @@ st.set_page_config(
     page_icon="😴"
 )
 
-data = pl.read_csv("../DSU-Dataset-Hourly-Blocks-Summary.csv")
+data = pl.read_csv("./DSU-Dataset-Hourly-Blocks-Summary.csv")
 
 nums_to_hours = {1: "0-5", 2: "6-11", 3: "12-17", 4: "18-23"}
 
