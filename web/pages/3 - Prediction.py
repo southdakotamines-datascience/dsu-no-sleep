@@ -1,6 +1,6 @@
 import streamlit as st
 import polars as pl
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
 st.title("Predictions for a selected site")
@@ -30,7 +30,7 @@ if (site == "A"):
     # Site A
     siteA_X = data.filter(pl.col("Site") == "A").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
     siteA_Y = data.filter(pl.col("Site") == "A").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteA_model = LinearRegression().fit(siteA_X, siteA_Y)
+    siteA_model = RandomForestRegressor().fit(siteA_X, siteA_Y)
 
     siteA_X_train, siteA_X_test, siteA_Y_train, siteA_Y_test = train_test_split(siteA_X, siteA_Y, test_size=0.2, random_state=42)
     st.header("Site A Model Performance:")
@@ -49,7 +49,7 @@ if (site == "B"):
     # Site B
     siteB_X = data.filter(pl.col("Site") == "B").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
     siteB_Y = data.filter(pl.col("Site") == "B").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteB_model = LinearRegression().fit(siteB_X, siteB_Y)
+    siteB_model = RandomForestRegressor().fit(siteB_X, siteB_Y)
 
     siteB_X_train, siteB_X_test, siteB_Y_train, siteB_Y_test = train_test_split(siteB_X, siteB_Y, test_size=0.2, random_state=42)
     st.header("Site B Model Performance:")
@@ -68,7 +68,7 @@ if (site == "C"):
     # Site C
     siteC_X = data.filter(pl.col("Site") == "C").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
     siteC_Y = data.filter(pl.col("Site") == "C").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteC_model = LinearRegression().fit(siteC_X, siteC_Y)
+    siteC_model = RandomForestRegressor().fit(siteC_X, siteC_Y)
 
     siteC_X_train, siteC_X_test, siteC_Y_train, siteC_Y_test = train_test_split(siteC_X, siteC_Y, test_size=0.2, random_state=42)
     st.header("Site C Model Performance:")
@@ -87,7 +87,7 @@ if (site == "D"):
     # Site D
     siteD_X = data.filter(pl.col("Site") == "D").select(["Year", "Month", "Day", "Hour", "Weekday"]).to_numpy()
     siteD_Y = data.filter(pl.col("Site") == "D").select(["ED Enc", "ED Enc Admitted"]).to_numpy()
-    siteD_model = LinearRegression().fit(siteD_X, siteD_Y)
+    siteD_model = RandomForestRegressor().fit(siteD_X, siteD_Y)
 
     siteD_X_train, siteD_X_test, siteD_Y_train, siteD_Y_test = train_test_split(siteD_X, siteD_Y, test_size=0.2, random_state=42)
     st.header("Site D Model Performance:")
