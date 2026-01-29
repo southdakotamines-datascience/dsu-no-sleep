@@ -136,5 +136,12 @@ if (site == "D"):
 
 if (site == "All Sites"):
     overall_prediction = pl.concat([siteA_prediction, siteB_prediction, siteC_prediction, siteD_prediction])
+    overall_prediction_csv = overall_prediction.with_columns(
+        overall_prediction["Hour"].replace_strict(nums_to_hours).alias("Hour"),
+        pl.date(year=pl.col("Year"), month=pl.col("Month"), day=pl.col("Day")).alias("Date")
+    ).drop(["Year", "Month", "Day", "Weekday"]).select(["Site", "Date", "Hour", "ED Enc", "ED Enc Admitted"])
+
     st.dataframe(overall_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
+    st.download_button("Download CSV", overall_prediction_csv.to_pandas().to_csv(index=False).encode("utf-8"), "overall_prediction.csv", "text/csv")
+
     st.bar_chart(data=overall_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
