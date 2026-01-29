@@ -43,7 +43,7 @@ if (site == "A"):
         pl.Series("ED Enc Admitted", siteA_prediction[:, 1])
     ])
     st.dataframe(siteA_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
-    st.line_chart(data=siteA_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"])
+    st.bar_chart(data=siteA_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "B"):
     # Site B
@@ -62,7 +62,7 @@ if (site == "B"):
         pl.Series("ED Enc Admitted", siteB_prediction[:, 1])
     ])
     st.dataframe(siteB_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
-    st.line_chart(data=siteB_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"])
+    st.bar_chart(data=siteB_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "C"):
     # Site C
@@ -81,7 +81,7 @@ if (site == "C"):
         pl.Series("ED Enc Admitted", siteC_prediction[:, 1])
     ])
     st.dataframe(siteC_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
-    st.line_chart(data=siteC_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"])
+    st.bar_chart(data=siteC_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
 if (site == "D"):
     # Site D
@@ -101,4 +101,4 @@ if (site == "D"):
     ])
 
     st.dataframe(siteD_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
-    st.line_chart(data=siteD_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"])
+    st.bar_chart(data=siteD_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)

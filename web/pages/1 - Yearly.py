@@ -6,7 +6,7 @@ data = pl.read_csv("../DSU-Dataset-Hourly-Blocks-Summary.csv")
 site_data = data.group_by("Site", "Year", "Month", "Date").agg(pl.col("ED Enc").sum().alias("ED Enc"), pl.col("ED Enc Admitted").sum().alias("ED Enc Admitted")).sort("Date")
 overall_data = site_data.group_by("Year", "Month", "Date").agg(pl.col("ED Enc").sum().alias("ED Enc"), pl.col("ED Enc Admitted").sum().alias("ED Enc Admitted")).sort("Date")
 
-st.header("Monthly Summary Data")
+st.header("Yearly Summary Data")
 st.set_page_config(
     page_title="Sanford Health/DSU Data Competition Visualizations",
     page_icon="😴"
