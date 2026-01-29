@@ -19,17 +19,17 @@ year = st.selectbox(
 
 site = st.selectbox(
     "Select a site:",
-    options=["All Sites", *site_data["Site"].unique().sort().to_list()],
+    options=["All Sites Summed", *site_data["Site"].unique().sort().to_list()],
 )
 
-if site == "All Sites":
+if site == "All Sites Summed":
     st.dataframe(overall_data.filter(pl.col("Year") == year).to_pandas().style.format({"Month": lambda x: nums_to_months[x]}))
 else:
     st.dataframe(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year).to_pandas().style.format({"Month": lambda x: nums_to_months[x]}))
 
 show_col = st.pills("Show: ", options=["ED Enc", "ED Enc Admitted"], selection_mode="multi", default=["ED Enc", "ED Enc Admitted"])
 
-if site == "All Sites":
+if site == "All Sites Summed":
     st.line_chart(overall_data.filter(pl.col("Year") == year), x="Date", y=show_col)
 else:
     st.line_chart(site_data.filter(pl.col("Site") == site).filter(pl.col("Year") == year), x="Date", y=show_col)
