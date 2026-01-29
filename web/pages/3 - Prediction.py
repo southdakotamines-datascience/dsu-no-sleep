@@ -1,7 +1,11 @@
 import streamlit as st
 import polars as pl
+import pandas as pd
+import matplotlib as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from datetime import datetime, timedelta
+import numpy as np
 
 st.title("Predictions for a selected site")
 st.set_page_config(
@@ -15,15 +19,32 @@ nums_to_months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May",
 nums_to_hours = {1: "0-5", 2: "6-11", 3: "12-17", 4: "18-23"}
 nums_to_weekdays = {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}
 
-predict_date = st.date_input("Select a date to predict ED Encounters and Admissions for each site:", min_value=last_date)
+use_date_range = st.checkbox("Predict date range?")
+if use_date_range:
+    today = datetime.today()
+    default_date = (today, today + timedelta(days=7))
+else:
+    default_date = "today"
+predict_date = st.date_input("Select a date to predict ED Encounters and Admissions for each site:", value=default_date, min_value=last_date)
 site = st.selectbox("Select a site to view predictions for:", options=["A", "B", "C", "D"])
-predict_data = [
-    pl.Series("Year", [predict_date.year] * 4),
-    pl.Series("Month", [predict_date.month] * 4),
-    pl.Series("Day", [predict_date.day] * 4),
-    pl.Series("Hour", [1, 2, 3, 4]),
-    pl.Series("Weekday", [predict_date.weekday() + 1] * 4),
-]
+
+if use_date_range:
+    date_range = pd.date_range(start=predict_date[0], end=predict_date[1])
+    predict_data = [
+        pl.Series("Year", np.array([[d.year] * 4 for d in date_range]).flatten()),
+        pl.Series("Month", np.array([[d.month] * 4 for d in date_range]).flatten()),
+        pl.Series("Day", np.array([[d.day] * 4 for d in date_range]).flatten()),
+        pl.Series("Hour", [1, 2, 3, 4] * len(date_range)),
+        pl.Series("Weekday", np.array([[d.weekday() + 1] * 4 for d in date_range]).flatten()),
+    ]
+else:
+    predict_data = [
+        pl.Series("Year", [predict_date.year] * 4),
+        pl.Series("Month", [predict_date.month] * 4),
+        pl.Series("Day", [predict_date.day] * 4),
+        pl.Series("Hour", [1, 2, 3, 4]),
+        pl.Series("Weekday", [predict_date.weekday() + 1] * 4),
+    ]
 predict_X = pl.DataFrame(predict_data)
 
 # Site A
@@ -57,7 +78,7 @@ if (site == "A"):
     siteA_prediction = predict_X.with_columns([
         pl.Series("ED Enc", siteA_prediction[:, 0].ceil(), dtype=pl.Int32),
         pl.Series("ED Enc Admitted", siteA_prediction[:, 1].ceil(), dtype=pl.Int32)
-    ])
+    ]).sort(["Year", "Month", "Day", "Hour"])
     st.dataframe(siteA_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteA_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
@@ -71,7 +92,7 @@ if (site == "B"):
     siteB_prediction = predict_X.with_columns([
         pl.Series("ED Enc", siteB_prediction[:, 0].ceil(), dtype=pl.Int32),
         pl.Series("ED Enc Admitted", siteB_prediction[:, 1].ceil(), dtype=pl.Int32)
-    ])
+    ]).sort(["Year", "Month", "Day", "Hour"])
     st.dataframe(siteB_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteB_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
@@ -85,7 +106,7 @@ if (site == "C"):
     siteC_prediction = predict_X.with_columns([
         pl.Series("ED Enc", siteC_prediction[:, 0].ceil(), dtype=pl.Int32),
         pl.Series("ED Enc Admitted", siteC_prediction[:, 1].ceil(), dtype=pl.Int32)
-    ])
+    ]).sort(["Year", "Month", "Day", "Hour"])
     st.dataframe(siteC_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteC_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
 
@@ -99,7 +120,7 @@ if (site == "D"):
     siteD_prediction = predict_X.with_columns([
         pl.Series("ED Enc", siteD_prediction[:, 0].ceil(), dtype=pl.Int32),
         pl.Series("ED Enc Admitted", siteD_prediction[:, 1].ceil(), dtype=pl.Int32)
-    ])
+    ]).sort(["Year", "Month", "Day", "Hour"])
 
     st.dataframe(siteD_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.bar_chart(data=siteD_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
