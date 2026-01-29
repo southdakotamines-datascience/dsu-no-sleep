@@ -6,3 +6,4 @@ reasons = pl.read_csv("../reasons.csv").sort("Count of appearances", descending=
 st.header("Popularity of Visit Reasons")
 
 st.dataframe(reasons)
+st.bar_chart(reasons, x="REASON_VISIT_NAME", y="Total ED Enc", horizontal=True, sort="-Total ED Enc")
