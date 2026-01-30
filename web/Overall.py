@@ -1,7 +1,10 @@
 import streamlit as st
 import polars as pl
+import os
 
-data = pl.read_csv("./DSU-Dataset-Hourly-Blocks-Summary.csv").sort(["Year", "Month"], descending=False)\
+cwd = os.getcwd()
+
+data = pl.read_csv(os.path.join(cwd, "DSU-Dataset-Hourly-Blocks-Summary.csv")).sort(["Year", "Month"], descending=False)\
       .group_by(["Year", "Month"])\
       .agg(\
           pl.col("ED Enc").sum().alias("ED Enc"),\

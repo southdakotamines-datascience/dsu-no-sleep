@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from datetime import datetime, timedelta
 import numpy as np
+import os
 
 st.title("Predictions for a selected site")
 st.write("This uses random forest regression, trained on data without 2020 and 2021.")
@@ -14,8 +15,10 @@ st.set_page_config(
     page_icon="😴"
 )
 
+cwd = os.getcwd()
+
 # remove covid data
-data = pl.read_csv("./DSU-Dataset-Hourly-Blocks-Summary.csv").filter(pl.col("Year") != 2020).filter(pl.col("Year") != 2021)
+data = pl.read_csv(os.path.join(cwd, "DSU-Dataset-Hourly-Blocks-Summary.csv")).filter(pl.col("Year") != 2020).filter(pl.col("Year") != 2021)
 last_date = data.select(pl.col("Date").max()).to_numpy()[0][0]
 nums_to_months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 nums_to_hours = {1: "0-5", 2: "6-11", 3: "12-17", 4: "18-23"}
@@ -142,8 +145,16 @@ if (site == "All Sites"):
         overall_prediction["Hour"].replace_strict(nums_to_hours).alias("Hour"),
         pl.date(year=pl.col("Year"), month=pl.col("Month"), day=pl.col("Day")).alias("Date")
     ).drop(["Year", "Month", "Day", "Weekday"]).select(["Site", "Date", "Hour", "ED Enc", "ED Enc Admitted"])
-
     st.dataframe(overall_prediction.to_pandas().style.format({"Month": lambda x: nums_to_months[x], "Hour": lambda x: nums_to_hours[x], "Weekday": lambda x: nums_to_weekdays[x]}))
     st.download_button("Download CSV", overall_prediction_csv.to_pandas().to_csv(index=False).encode("utf-8"), "overall_prediction.csv", "text/csv")
 
-    st.bar_chart(data=overall_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)
+    if (use_date_range):
+        plot_df = overall_prediction.with_columns(
+            pl.date(year=pl.col("Year"), month=pl.col("Month"), day=pl.col("Day")).alias("Date")
+        ).group_by("Date").agg(pl.col("ED Enc").sum().alias("ED Enc"), pl.col("ED Enc Admitted").sum().alias("ED Enc Admitted"))
+
+        st.write("This graph sums the ED Enc and ED Enc Admitted by date and site.")
+        st.line_chart(data=plot_df, x="Date", y=["ED Enc", "ED Enc Admitted"])
+    else:
+        st.write("Where hour 1 is 0-5, 2 is 6-11, 3 is 12-17, and 4 is 18-23.")
+        st.bar_chart(data=overall_prediction, x="Hour", y=["ED Enc", "ED Enc Admitted"], stack=False)

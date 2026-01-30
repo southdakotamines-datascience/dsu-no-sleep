@@ -1,7 +1,10 @@
 import streamlit as st
 import polars as pl
+import os
 
-reasons = pl.read_csv("./reasons.csv").sort("Count of appearances", descending=True)
+cwd = os.getcwd()
+
+reasons = pl.read_csv(os.path.join(cwd, "reasons.csv")).sort("Count of appearances", descending=True)
 
 st.header("Popularity of Visit Reasons (for fun)")
 
