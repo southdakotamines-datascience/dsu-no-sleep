@@ -3,10 +3,10 @@ import streamlit as st
 import polars as pl
 
 cwd = os.getcwd()
-parent = os.path.abspath(os.path.join(cwd, os.pardir))
+web_dir = os.path.join(cwd, "web")
 
 nums_to_months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
-data = pl.read_csv(os.path.join(cwd, "DSU-Dataset-Hourly-Blocks-Summary.csv"))
+data = pl.read_csv(os.path.join(web_dir, "DSU-Dataset-Hourly-Blocks-Summary.csv"))
 site_data = data.group_by("Site", "Year", "Month", "Date").agg(pl.col("ED Enc").sum().alias("ED Enc"), pl.col("ED Enc Admitted").sum().alias("ED Enc Admitted")).sort("Date")
 overall_data = site_data.group_by("Year", "Month", "Date").agg(pl.col("ED Enc").sum().alias("ED Enc"), pl.col("ED Enc Admitted").sum().alias("ED Enc Admitted")).sort("Date")
 

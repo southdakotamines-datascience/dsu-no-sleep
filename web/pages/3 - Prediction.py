@@ -16,9 +16,10 @@ st.set_page_config(
 )
 
 cwd = os.getcwd()
+web_dir = os.path.join(cwd, "web")
 
 # remove covid data
-data = pl.read_csv(os.path.join(cwd, "DSU-Dataset-Hourly-Blocks-Summary.csv")).filter(pl.col("Year") != 2020).filter(pl.col("Year") != 2021)
+data = pl.read_csv(os.path.join(web_dir, "DSU-Dataset-Hourly-Blocks-Summary.csv")).filter(pl.col("Year") != 2020).filter(pl.col("Year") != 2021)
 last_date = data.select(pl.col("Date").max()).to_numpy()[0][0]
 nums_to_months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 nums_to_hours = {1: "0-5", 2: "6-11", 3: "12-17", 4: "18-23"}

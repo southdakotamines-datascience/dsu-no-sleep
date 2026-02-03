@@ -3,8 +3,9 @@ import polars as pl
 import os
 
 cwd = os.getcwd()
+web_dir = os.path.join(cwd, "web")
 
-data = pl.read_csv(os.path.join(cwd, "DSU-Dataset-Hourly-Blocks-Summary.csv")).sort(["Year", "Month"], descending=False)\
+data = pl.read_csv(os.path.join(web_dir, "DSU-Dataset-Hourly-Blocks-Summary.csv")).sort(["Year", "Month"], descending=False)\
       .group_by(["Year", "Month"])\
       .agg(\
           pl.col("ED Enc").sum().alias("ED Enc"),\
