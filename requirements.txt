@@ -1,2 +1,4 @@
 polars
 wordcloud
+pmdarima
+catboost
