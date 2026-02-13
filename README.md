@@ -24,7 +24,7 @@ Exploring the data, we can see there is a significant dip in 2020.
 Not only is there a huge dip, but daily ED encounters increase after COVID, compared to pre-COVID.  
 These periods are calculated as such:
 - pre-COVID will be Jan. 1, 2018 up to March 13, 2020 (this was when state of emergency was declared in South Dakota, according to [Wikipedia](https://en.wikipedia.org/wiki/U.S._state_and_local_government_responses_to_the_COVID-19_pandemic))
-- during COVID is March 13, 2020 to January 1st, 2020 (cases began to decline following the winter 2020 surge, according to [Keloland](https://www.keloland.com/keloland-com-original/looking-back-2-years-of-covid-19-in-south-dakota/))
+- during COVID is March 13, 2020 to January 1st, 2021 (cases began to decline following the winter 2020 surge, according to [Keloland](https://www.keloland.com/keloland-com-original/looking-back-2-years-of-covid-19-in-south-dakota/))
 - There was also an [Omicron surge](https://doh.sd.gov/press-releases/first-covid-19-omicron-variant-case-detected-in-south-dakota/) from December 22, 2021 to February 1st, 2021. We will extend "during COVID" period to February 1st for simplicity.
 - February 1st, 2021 to August 31st, 2025 is post-COVID.
 
