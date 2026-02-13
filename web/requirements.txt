@@ -2,3 +2,4 @@ polars
 streamlit
 scikit-learn
 matplotlib
+catboost
