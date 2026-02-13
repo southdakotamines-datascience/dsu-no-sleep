@@ -32,4 +32,4 @@ Time series data can be decomposed into three types of time series patterns; tre
 The trend represents the underlying pattern. Seasonality represents repeating fluctuations caused by seasons or cycles. The residual is the remaining noise after the trend and seasonality is removed from the data. All three components can be added together to get the top graph.  
 We can see that seasonality occurs regularly, and its magnitude is consistent at each peak/valley. This is great for a model like ARIMA/SARIMA.
 ## Methodology
-
+We first considered that each site gets different volumes of traffic, so we made a model per site. Additionally, since ED Enc and ED Admitted are correlated, we should use a multivariate regression model.
