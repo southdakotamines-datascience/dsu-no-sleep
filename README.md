@@ -39,5 +39,5 @@ We first considered that each site gets different volumes of traffic, so we made
 Ultimately, the model we ended up choosing was CatBoost. It was able to follow the trend well enough in its predictions, and it had as much variation/noise as the actual data did. And, most importantly, it accomplished this without terribly overfitting the data. Preferably, we should have used a time forecasting model such as ARIMA/SARIMA, but we could not get this working in time.
 |                                                                 |                                                                 |
 | ----------------------------------------------------------------|---------------------------------------------------------------- |
-| *$R^2$ of 0.7292* ![Site A - CatBoost](./pics/models/cat-A.png) | *$R^2$ of 0.7958* ![Site B - CatBoost](./pics/models/cat-B.png) |
-| *$R^2$ of 0.7078* ![Site C - CatBoost](./pics/models/cat-C.png) | *$R^2$ of 0.6467* ![Site D - CatBoost](./pics/models/cat-D.png) |
+| *$R^2$ of 0.6240* ![Site A - CatBoost](./pics/models/cat-A.png) | *$R^2$ of 0.5125* ![Site B - CatBoost](./pics/models/cat-B.png) |
+| *$R^2$ of 0.6912* ![Site C - CatBoost](./pics/models/cat-C.png) | *$R^2$ of 0.7005* ![Site D - CatBoost](./pics/models/cat-D.png) |
