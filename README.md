@@ -1,8 +1,10 @@
 # Sanford Health/DSU Data Competition - Team No Sleep
+### Introduction
+Team No Sleep from South Dakota Mines by Joseph Coast, Angelo Cosato, Eric Johnson, Tammy Nguyen.  
 This is Team No Sleep's submission for the Sanford Health/DSU Data Competition 2026. There are three components to the code: a Streamlit web app that allows the user to predict any given date or date range, a Jupyter notebook that contains our EDA, and finally a Jupyter notebook that has the many models we tried.  
-The GitHub repository can be found [here](https://github.com/southdakotamines-datascience/dsu-no-sleep), and the Streamlit app can be found [here](https://dsu-no-sleep.streamlit.app/).
+The Streamlit app can be found [here](https://dsu-no-sleep.streamlit.app/).
 
-## Approach
+## Approach / Methodology
 ### Correlation
 The given dataset represents the ED volumes from four large Sanford Health emergency departments. This includes the total encounters and the number of encounters admitted to a floor. It's important to note that the number of encounters contains the number of admitted, so they are correlated.  
 
@@ -27,9 +29,15 @@ These periods are calculated as such:
 - February 1st, 2021 to August 31st, 2025 is post-COVID.
 
 ### Seasonal decomposition
-Time series data can be decomposed into three types of time series patterns; trend-cycle, seasonality, residual. After we remove the outliers (these are data points with a z-score above 3, where z-score is $\frac{x-\mu}{\sigma}$), we get the following additive decompositions for August 2025.  
+Time series data can be decomposed into three types of time series patterns; trend-cycle, seasonality, residual. After we remove the outliers (these are data points with a z-score above 3, where z-score is $\frac{x-\mu}{\sigma}$), we get the following additive decompositions for August 2025. This uses moving averages.  
 ![Decomposition of ED Enc](./pics/decomposition-enc.png) ![Decomposition of ED Admitted](./pics/decomposition-admit.png)  
 The trend represents the underlying pattern. Seasonality represents repeating fluctuations caused by seasons or cycles. The residual is the remaining noise after the trend and seasonality is removed from the data. All three components can be added together to get the top graph.  
-We can see that seasonality occurs regularly, and its magnitude is consistent at each peak/valley. This is great for a model like ARIMA/SARIMA.
-## Methodology
-We first considered that each site gets different volumes of traffic, so we made a model per site. Additionally, since ED Enc and ED Admitted are correlated, we should use a multivariate regression model.
+We can see that seasonality occurs regularly. Its magnitude is consistent at each peak/valley, but the magnitude is not particularly large. Additionally, its trend may be hard to predict.
+
+### Model
+We first considered that each site gets different volumes of traffic, so we made a model per site. Additionally, since ED Enc and ED Admitted are correlated, we want to use a multivariate regression model. Additionally, since the volume of ED visits changes after COVID, we will train the models on post-COVID data, AKA 2/1/2021-8/31/2025.  
+Ultimately, the model we ended up choosing was CATboost. It was able to follow the trend well enough in its predictions, and it had as much variation/noise as the actual data did. And, most importantly, it accomplished this without terribly overfitting the data. Preferably, we should have used a time forecasting model such as ARIMA/SARIMA, but we could not get this working in time.
+|                                                                 |                                                                 |
+| ----------------------------------------------------------------|---------------------------------------------------------------- |
+| *$R^2$ of 0.7292* ![Site A - CATboost](./pics/models/cat-A.png) | *$R^2$ of 0.7958* ![Site B - CATboost](./pics/models/cat-B.png) |
+| *$R^2$ of 0.7078* ![Site C - CATboost](./pics/models/cat-C.png) | *$R^2$ of 0.6467* ![Site D - CATboost](./pics/models/cat-D.png) |
