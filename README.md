@@ -27,7 +27,9 @@ These periods are calculated as such:
 - February 1st, 2021 to August 31st, 2025 is post-COVID.
 
 ### Seasonal decomposition
-Time series data can be decomposed into three types of time series patterns; trend, seasonality, residual. After we remove the outliers (these are data points with a z-score above 3, where z-score is $\frac{x-\mu}{\sigma}$), we get the following decompositions.  
+Time series data can be decomposed into three types of time series patterns; trend-cycle, seasonality, residual. After we remove the outliers (these are data points with a z-score above 3, where z-score is $\frac{x-\mu}{\sigma}$), we get the following additive decompositions for August 2025.  
 ![Decomposition of ED Enc](./pics/decomposition-enc.png) ![Decomposition of ED Admitted](./pics/decomposition-admit.png)  
-This shows us that 
+The trend represents the underlying pattern. Seasonality represents repeating fluctuations caused by seasons or cycles. The residual is the remaining noise after the trend and seasonality is removed from the data. All three components can be added together to get the top graph.  
+We can see that seasonality occurs regularly, and its magnitude is consistent at each peak/valley. This is great for a model like ARIMA/SARIMA.
 ## Methodology
+
